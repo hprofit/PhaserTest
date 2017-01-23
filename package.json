@@ -4,6 +4,7 @@
   "description": "Test for Phaser.",
   "main": "src/index.js",
   "dependencies": {
+    "http-server": "0.9.0",
     "phaser": "2.6.2"
   },
   "devDependencies": {
@@ -15,7 +16,10 @@
   },
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "serve": "http-server -p 9000",
+    "dev": "npm run serve | npm run watch",
+    "start": "npm run build && npm run serve"
   },
   "author": "",
   "license": "ISC"

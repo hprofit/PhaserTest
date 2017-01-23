@@ -9,9 +9,7 @@ Building:
 `npm run build`
 
 For development:
-`npm run watch`
+`npm run dev`
 
 To Run:
-- Open `index.html` in a browser
-- If that doesn't work, run your web server and serve the `index.html` file
-- `sudo http-server -p 9000` then navigate to `http://localhost:9000/`
+- `npm run start` then navigate to `http://localhost:9000/`
