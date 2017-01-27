@@ -10,6 +10,14 @@ export class Player {
     //  Our two animations, walking left and right.
     this.playerBody.animations.add('left', [0, 1, 2, 3], 10, true);
     this.playerBody.animations.add('right', [5, 6, 7, 8], 10, true);
+
+		this.score = 0;
+
+		this.fontOptions = { fontSize: '32px', fill: '#000' };
+		this.scoreText = game.add.text(16, 16, 'Score: 0', this.fontOptions);
+
+		let xCoord = game.camera.width - 170;
+		this.healthText = game.add.text(xCoord, 16, 'Health: 10', this.fontOptions);
 	}
 
   handleInput(cursors, contacts) {
@@ -37,6 +45,11 @@ export class Player {
         this.playerBody.body.velocity.y = -350;
     }
   }
+
+	addScore(amount) {
+		this.score += amount;
+		this.scoreText.text = `Score: ${this.score}`;
+	}
 }
 
 export function loadPlayerImage(gameObj) {

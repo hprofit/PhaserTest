@@ -10,8 +10,8 @@ class GameState extends Phaser.State {
 		preloadPlatforms(this.game);
 
 		this.platforms = null;
-		this.player = null;
 		this.stars = null;
+		this.player = null;
   }
 
   create() {
@@ -21,19 +21,33 @@ class GameState extends Phaser.State {
     this.game.add.sprite(0, 0, 'sky');
 
     this.platforms = new Platforms(this.game);
-
-		this.player = new Player(this.game, 32, this.game.world.height - 150);
-
 		this.stars = new StarGroup(this.game);
+		this.player = new Player(this.game, 32, this.game.world.height - 150);
   }
 
 	collideGroups(groupA, groupB) {
 		return this.game.physics.arcade.collide(groupA, groupB);
 	}
 
+	overlapEntityAndGroup(game, entity, group, callback, callbackContext) {
+		let hits = 0;
+		if (group.children) {
+			group.children.forEach(function(groupEntity, index) {
+				hits += game.physics.arcade.overlap(entity, groupEntity, callback, null, callbackContext) ? 1 : 0;
+			});
+		}
+		return hits;
+		// this.game.physics.arcade.overlap(entity, this.stars.group, callback, null, callbackContext);
+	}
+
   update() {
 		this.collideGroups(this.stars.group, this.platforms.group);
-		this.game.physics.arcade.overlap(this.player.playerBody, this.stars.group, this.stars.collectStar, null, this.stars);
+
+		let starsCollected = this.overlapEntityAndGroup(this.game, this.player.playerBody, this.stars.group, this.stars.collectStar, this.stars);
+		if (starsCollected > 0){
+			// Calls the player to add points when a star is removed
+			this.player.addScore(50 * starsCollected);
+		}
 		//  Collide the player and the stars with the this.platforms
 		let hitPlatform = this.collideGroups(this.player.playerBody, this.platforms.group);
 
